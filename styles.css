@@ -206,31 +206,46 @@ body {
     display: grid;
     /* Standard: 4 columns */
     grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(5, 75px);
-    gap: 1px;
-    background: rgba(255, 255, 255, 0.05);
+    grid-auto-rows: minmax(70px, 1fr);
+    /* Auto rows for better fit */
+    gap: 12px;
+    /* Distinct gap for tiles */
+    background: transparent;
+    /* Remove grid line background */
     transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 10px 0;
+    /* Add visual spacing */
 }
 
 .calculator.scientific .keypad {
-    /* Scientific: 8 columns (4 sci + 4 std) or similar layout? 
-       Let's try 7 columns: 3 Sci + 4 Std */
     grid-template-columns: repeat(7, 1fr);
 }
 
 button {
-    height: 75px;
+    height: 70px;
+    /* Aligned with width roughly */
     border: none;
-    background: transparent;
+    background: rgba(255, 255, 255, 0.08);
+    /* Visible tile background */
     color: var(--text-primary);
     font-size: 1.5rem;
-    font-weight: 300;
+    font-weight: 400;
     cursor: pointer;
     transition: background 0.2s ease, color 0.2s ease, transform 0.1s;
     outline: none;
     position: relative;
     overflow: hidden;
     width: 100%;
+    border-radius: 50%;
+    /* Make them round circles as requested "round tiles" implies tiles that are round? or tiles with round corners? 
+                           Let's go with 24px for "Rounded Tiles" to be safe between Square and Circle. 
+                           User said "Round tiles". If I make them 50%, the scientific ones (oblong) might look weird if not handled. 
+                           Let's use 50% for standard numbers and pill shape for text? 
+                           Actually, iOS calc uses circles. Let's try 50px border radius (Circle). */
+    border-radius: 20px;
+    /* High rounding for "Round Tile" look but safe for rectangles */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Subtle depth */
 }
 
 /* Standard keys placement */
@@ -295,13 +310,36 @@ button:active {
 /* Spanning */
 .span-2 {
     grid-column: span 2;
+    border-radius: 20px;
+    /* Enhance alignment */
+    /* aspect-ratio won't work perfectly for span-2, but height is fixed so it's fine */
 }
 
-/* Colors */
+/* Colors and Hover */
+button:hover {
+    background: rgba(255, 255, 255, 0.15);
+    /* Slightly brighter */
+    transform: translateY(-2px);
+}
+
+button:active {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(0);
+}
+
 .function-btn {
     color: var(--accent-color);
-    font-weight: 500;
+    font-weight: 600;
+    background: rgba(0, 255, 242, 0.1);
+    /* Tinted background */
 }
+
+.operator-btn {
+    color: var(--operator-color);
+    font-size: 1.8rem;
+    background: rgba(255, 0, 222, 0.1);
+}
+
 
 .operator-btn {
     color: var(--operator-color);
