@@ -486,3 +486,60 @@ button:active {
 .clear-history-btn:hover {
     background: rgba(255, 0, 0, 0.4);
 }
+
+/* Mobile Responsiveness */
+@media screen and (max-width: 768px) {
+    :root {
+        --calc-width-std: 95vw;
+        --calc-width-sci: 95vw;
+    }
+
+    .calculator {
+        border-radius: 12px;
+    }
+
+    .calculator-header {
+        position: relative;
+        padding: 10px;
+    }
+
+    .display {
+        padding-top: 20px;
+        min-height: 100px;
+    }
+
+    .current-operand {
+        font-size: 2rem;
+        word-break: break-all;
+    }
+
+    .previous-operand {
+        font-size: 1rem;
+    }
+
+    .keypad {
+        grid-template-rows: repeat(5, 60px);
+    }
+
+    button {
+        height: 60px;
+        font-size: 1.2rem;
+    }
+
+    .calculator.scientific .keypad {
+        grid-template-columns: repeat(7, 1fr);
+    }
+
+    .calculator.scientific button {
+        font-size: 0.9rem;
+        padding: 0;
+    }
+
+    .sci-btn {
+        font-size: 0.8rem;
+    }
+
+    .error-code {
+        font-size: 5rem;
+    }
+}
