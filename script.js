@@ -265,6 +265,22 @@ if (historyToggleBtn) historyToggleBtn.addEventListener('click', toggleHistory);
 if (closeHistoryBtn) closeHistoryBtn.addEventListener('click', toggleHistory);
 if (clearHistoryBtn) clearHistoryBtn.addEventListener('click', () => calculator.clearHistory());
 
+// Fullscreen Logic
+const fullscreenBtn = document.querySelector('.fullscreen-toggle');
+if (fullscreenBtn) {
+    fullscreenBtn.addEventListener('click', () => {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().catch(err => {
+                console.log(`Error attempting to enable fullscreen: ${err.message}`);
+            });
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            }
+        }
+    });
+}
+
 // Keyboard Support
 document.addEventListener('keydown', e => {
     if (e.repeat) return;

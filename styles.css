@@ -157,7 +157,15 @@ body {
     text-shadow: 0 0 10px var(--accent-glow);
 }
 
-.history-toggle {
+
+.header-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.history-toggle,
+.fullscreen-toggle {
     background: transparent;
     border: none;
     color: var(--text-secondary);
@@ -167,7 +175,8 @@ body {
     transition: color 0.2s;
 }
 
-.history-toggle:hover {
+.history-toggle:hover,
+.fullscreen-toggle:hover {
     color: var(--accent-color);
 }
 
@@ -539,6 +548,8 @@ button:active {
     .calculator-header {
         position: relative;
         padding: 10px;
+        justify-content: space-between;
+        /* Ensure spreading */
     }
 
     .display {
