@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Calculator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="background-elements">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
+
+    <div class="calculator-container">
+        <div class="calculator" id="calculator">
+            <!-- Header (Nav + History) -->
+            <div class="calculator-header">
+                <div class="nav-links">
+                    <button class="nav-btn active" data-mode="standard">Standard</button>
+                    <button class="nav-btn" data-mode="scientific">Scientific</button>
+                </div>
+                <button class="history-toggle" title="Show History">History</button>
+            </div>
+
+            <!-- Display -->
+            <div class="display">
+                <div class="previous-operand" data-previous-operand></div>
+                <div class="current-operand" data-current-operand>0</div>
+            </div>
+
+            <!-- Keypad -->
+            <div class="keypad" id="keypad">
+                <!-- ROW 1 -->
+                <button class="sci-btn" data-scientific>sin</button>
+                <button class="sci-btn" data-scientific>cos</button>
+                <button class="sci-btn" data-scientific>tan</button>
+                <button class="span-2 function-btn standard-key" data-all-clear>AC</button>
+                <button class="function-btn standard-key" data-delete>DEL</button>
+                <button class="operator-btn standard-key" data-operation>÷</button>
+
+                <!-- ROW 2 -->
+                <button class="sci-btn" data-scientific>log</button>
+                <button class="sci-btn" data-scientific>ln</button>
+                <button class="sci-btn" data-scientific>asin</button>
+                <button class="standard-key" data-number>7</button>
+                <button class="standard-key" data-number>8</button>
+                <button class="standard-key" data-number>9</button>
+                <button class="operator-btn standard-key" data-operation>×</button>
+
+                <!-- ROW 3 -->
+                <button class="sci-btn" data-scientific>x²</button>
+                <button class="sci-btn" data-scientific>e</button>
+                <button class="sci-btn" data-scientific>abs</button>
+                <button class="standard-key" data-number>4</button>
+                <button class="standard-key" data-number>5</button>
+                <button class="standard-key" data-number>6</button>
+                <button class="operator-btn standard-key" data-operation>-</button>
+
+                <!-- ROW 4 -->
+                <button class="sci-btn" data-scientific>√</button>
+                <button class="sci-btn" data-scientific>π</button>
+                <button class="sci-btn" data-scientific>exp</button>
+                <button class="standard-key" data-number>1</button>
+                <button class="standard-key" data-number>2</button>
+                <button class="standard-key" data-number>3</button>
+                <button class="operator-btn standard-key" data-operation>+</button>
+
+                <!-- ROW 5 -->
+                <button class="sci-btn" data-scientific>(</button>
+                <button class="sci-btn" data-scientific>)</button>
+                <button class="sci-btn" data-scientific>%</button>
+                <button class="operator-btn standard-key" data-operation>^</button>
+                <button class="standard-key" data-number>0</button>
+                <button class="standard-key" data-number>.</button>
+                <button class="equals-btn standard-key" data-equals>=</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- History Sidebar -->
+    <div class="history-panel">
+        <div class="history-header">
+            <span class="history-title">History</span>
+            <button class="close-history">&times;</button>
+        </div>
+        <div class="history-list">
+            <!-- History items injected here -->
+        </div>
+        <button class="clear-history-btn">Clear History</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

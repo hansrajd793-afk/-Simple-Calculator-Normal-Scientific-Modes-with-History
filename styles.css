@@ -1,0 +1,488 @@
+:root {
+    --bg-color: #0f172a;
+    --glass-bg: rgba(255, 255, 255, 0.1);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --accent-color: #00fff2;
+    --accent-glow: rgba(0, 255, 242, 0.5);
+    --operator-color: #ff00de;
+    --operator-glow: rgba(255, 0, 222, 0.5);
+    --sci-color: #bbff00;
+    --btn-hover: rgba(255, 255, 255, 0.15);
+    --btn-active: rgba(255, 255, 255, 0.25);
+    --history-bg: rgba(15, 23, 42, 0.95);
+
+    --calc-width-std: 350px;
+    --calc-width-sci: 700px;
+    /* Wider for full scientific layout */
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Outfit', sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    color: var(--text-primary);
+}
+
+/* Background Animations */
+.background-elements {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.6;
+    animation: float 10s infinite cubic-bezier(0.4, 0, 0.2, 1) alternate;
+    will-change: transform;
+}
+
+.orb-1 {
+    width: 300px;
+    height: 300px;
+    background: var(--operator-color);
+    top: 10%;
+    left: 20%;
+    animation-delay: 0s;
+}
+
+.orb-2 {
+    width: 400px;
+    height: 400px;
+    background: var(--accent-color);
+    bottom: 10%;
+    right: 20%;
+    animation-delay: -5s;
+}
+
+@keyframes float {
+    0% {
+        transform: translate(0, 0);
+    }
+
+    100% {
+        transform: translate(30px, 50px);
+    }
+}
+
+/* Calculator Container */
+.calculator {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+    width: var(--calc-width-std);
+    overflow: hidden;
+    animation: fadeIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    will-change: transform, opacity, width;
+    position: relative;
+    z-index: 10;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.calculator.scientific {
+    width: var(--calc-width-sci);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(40px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Header Actions Container */
+.calculator-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    z-index: 20;
+    position: absolute;
+    /* Keep absolute to overlap background but stay structured? No, let's make it relative part of flow? */
+    /* If we make it part of flow, it pushes display down. But display has min-height. */
+    /* Let's keep it absolute relative to calculator container but use flex for its internal layout. */
+    top: 0;
+    left: 0;
+}
+
+/* Navigation Links */
+.nav-links {
+    display: flex;
+    gap: 15px;
+}
+
+.nav-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: color 0.2s;
+    font-weight: 700;
+    padding: 5px;
+}
+
+.nav-btn:hover,
+.nav-btn.active {
+    color: var(--accent-color);
+    text-shadow: 0 0 10px var(--accent-glow);
+}
+
+.history-toggle {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 5px;
+    transition: color 0.2s;
+}
+
+.history-toggle:hover {
+    color: var(--accent-color);
+}
+
+/* Display Section */
+.display {
+    padding: 70px 24px 20px 24px;
+    /* Ensure enough space for header */
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+    background: rgba(0, 0, 0, 0.2);
+    min-height: 140px;
+    word-break: break-all;
+    word-wrap: break-word;
+}
+
+.previous-operand {
+    color: var(--text-secondary);
+    font-size: 1.2rem;
+    min-height: 1.5rem;
+    margin-bottom: 8px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.current-operand {
+    color: var(--text-primary);
+    font-size: 2.5rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+/* Keypad Grid & Transitions */
+.keypad {
+    display: grid;
+    /* Standard: 4 columns */
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(5, 75px);
+    gap: 1px;
+    background: rgba(255, 255, 255, 0.05);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.calculator.scientific .keypad {
+    /* Scientific: 8 columns (4 sci + 4 std) or similar layout? 
+       Let's try 7 columns: 3 Sci + 4 Std */
+    grid-template-columns: repeat(7, 1fr);
+}
+
+button {
+    height: 75px;
+    border: none;
+    background: transparent;
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    font-weight: 300;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease, transform 0.1s;
+    outline: none;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+}
+
+/* Standard keys placement */
+.standard-key {
+    display: block;
+}
+
+/* Scientific keys - hidden in standard mode */
+.sci-btn {
+    display: none;
+    /* Hidden by default */
+    background: rgba(0, 0, 0, 0.1);
+    color: var(--sci-color);
+    font-size: 1.1rem;
+}
+
+.calculator.scientific .sci-btn {
+    display: block;
+    /* Shown in scientific mode */
+    animation: fadeInBtn 0.5s ease backwards;
+}
+
+@keyframes fadeInBtn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s ease-out, height 0.3s ease-out;
+}
+
+button:active::after {
+    width: 200px;
+    height: 200px;
+    transition: 0s;
+}
+
+button:hover {
+    background: var(--btn-hover);
+}
+
+button:active {
+    background: var(--btn-active);
+}
+
+/* Spanning */
+.span-2 {
+    grid-column: span 2;
+}
+
+/* Colors */
+.function-btn {
+    color: var(--accent-color);
+    font-weight: 500;
+}
+
+.operator-btn {
+    color: var(--operator-color);
+    font-size: 1.8rem;
+}
+
+.equals-btn {
+    background: var(--accent-color);
+    color: #000;
+    font-weight: 700;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.equals-btn:hover {
+    background: #00e6da;
+    box-shadow: 0 0 20px var(--accent-glow);
+}
+
+.pressed {
+    animation: clickEffect 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes clickEffect {
+    0% {
+        transform: scale(1);
+    }
+
+    40% {
+        transform: scale(0.9);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* History Panel */
+.history-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 300px;
+    height: 100%;
+    background: var(--history-bg);
+    border-left: 1px solid var(--glass-border);
+    backdrop-filter: blur(20px);
+    z-index: 100;
+    transform: translateX(100%);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
+}
+
+/* 404 Page Styles */
+.error-container {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+    padding: 60px 40px;
+    text-align: center;
+    animation: fadeIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    will-change: transform, opacity;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.error-code {
+    font-size: 8rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    text-shadow: 0 0 30px var(--accent-glow);
+    margin: 0;
+    line-height: 1;
+}
+
+.error-message {
+    font-size: 1.5rem;
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+}
+
+.home-btn {
+    display: inline-block;
+    padding: 15px 30px;
+    background: var(--accent-color);
+    color: #0f172a;
+    text-decoration: none;
+    font-weight: 700;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px var(--accent-glow);
+}
+
+.home-btn:hover {
+    background: #00e6da;
+    transform: translateY(-2px);
+    box-shadow: 0 0 25px var(--accent-glow);
+}
+
+.home-btn:active {
+    transform: translateY(0);
+}
+
+.history-panel.open {
+    transform: translateX(0);
+}
+
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--glass-border);
+    padding-bottom: 10px;
+}
+
+.history-title {
+    font-size: 1.5rem;
+    color: var(--accent-color);
+}
+
+.close-history {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+.history-list {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.history-item {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.history-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.history-expression {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+}
+
+.history-result {
+    color: var(--text-primary);
+    font-size: 1.2rem;
+    font-weight: 500;
+    text-align: right;
+}
+
+.clear-history-btn {
+    margin-top: 20px;
+    background: rgba(255, 0, 0, 0.2);
+    color: #ffaaaa;
+    font-size: 1rem;
+    border-radius: 8px;
+    height: 50px;
+    border: none;
+    cursor: pointer;
+}
+
+.clear-history-btn:hover {
+    background: rgba(255, 0, 0, 0.4);
+}
