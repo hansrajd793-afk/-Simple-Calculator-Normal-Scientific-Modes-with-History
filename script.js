@@ -20,8 +20,17 @@ class Calculator {
         }
         if (this.currentOperand === '0') return;
 
-        // Remove last char. Careful with specific strings like 'sin(' but simple delete is okay for now
-        this.currentOperand = this.currentOperand.toString().slice(0, -1);
+        // Tokens to delete as a unit. 'asin' must be before 'sin' to prioritize longest match.
+        const tokens = ['asin(', 'sin(', 'cos(', 'tan(', 'log(', 'ln(', 'abs(', 'exp(', '√(', 'Error', 'NaN'];
+
+        let match = tokens.find(token => this.currentOperand.endsWith(token));
+
+        if (match) {
+            this.currentOperand = this.currentOperand.slice(0, -match.length);
+        } else {
+            this.currentOperand = this.currentOperand.toString().slice(0, -1);
+        }
+
         if (this.currentOperand === '') this.currentOperand = '0';
     }
 
@@ -312,3 +321,20 @@ document.addEventListener('keydown', e => {
     }
     calculator.updateDisplay();
 });
+
+// Custom Cursor Logic
+const cursor = document.getElementById('cursor');
+if (cursor) {
+    document.addEventListener('mousemove', e => {
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
+    });
+
+    document.addEventListener('mousedown', () => {
+        cursor.style.transform = 'translate(-50%, -50%) scale(0.8)';
+    });
+
+    document.addEventListener('mouseup', () => {
+        cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+    });
+}

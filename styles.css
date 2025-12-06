@@ -35,6 +35,44 @@ body {
     color: var(--text-primary);
 }
 
+/* Custom Cursor Styles */
+.cursor {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--accent-color);
+    box-shadow: 0 0 20px var(--accent-glow), 0 0 40px var(--accent-glow);
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    /* Hidden by default until moved */
+    transition: opacity 0.3s ease, transform 0.1s ease-out;
+    mix-blend-mode: screen;
+}
+
+/* Desktop Only: Hide native cursor and show custom */
+@media (pointer: fine) {
+    body {
+        cursor: none;
+    }
+
+    .cursor {
+        opacity: 1;
+    }
+
+    /* Ensure interactive elements show pointer or keep custom cursor? 
+       Usually 'cursor: none' hides it everywhere. 
+       If we want to show a different state on hover, we can add a class to cursor.
+    */
+    a,
+    button {
+        cursor: none;
+        /* Force hide everywhere */
+    }
+}
+
 /* Background Animations */
 .background-elements {
     position: absolute;
